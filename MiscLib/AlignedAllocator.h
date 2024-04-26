@@ -2,11 +2,14 @@
 #define MiscLib__ALIGNEDALLOCATOR_HEADER__
 #include <memory>
 #include <malloc.h>
-#include <xmmintrin.h>
 #include <limits>
+#include "CustomAlloc.h"
+
 #ifdef max
 #undef max
 #endif
+
+
 
 namespace MiscLib
 {
@@ -33,9 +36,9 @@ public:
 	AlignedAllocator(const AlignedAllocator< U, Align > &) throw() {}
 	pointer address(reference x) const { return &x; }
 	const_pointer address(const_reference x) const { return &x; }
-	pointer allocate(size_type s, std::allocator< void >::const_pointer hint = 0)
-	{ return (T *)_mm_malloc(s * sizeof(T), Align); }
-	void deallocate(pointer p, size_type) { _mm_free(p); }
+	pointer allocate(size_type s)
+	{ return (T *)CUSTOM_ALLOC(s * sizeof(T), Align); }
+	void deallocate(pointer p, size_type) { CUSTOM_FREE(p); }
 	size_type max_size() const throw() { return std::numeric_limits< size_type >::max(); }
 	void construct(pointer p, const T& val) { new(static_cast< void * >(p)) T(val); }
 	void destroy(pointer p) { p->~T(); }

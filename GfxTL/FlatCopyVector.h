@@ -31,7 +31,7 @@ namespace GfxTL
 
 			FlatCopyVector(size_t s)
 			{
-				m_begin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+				m_begin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 				m_end = m_begin + s;
 				m_capacity = m_end;
 			}
@@ -46,7 +46,7 @@ namespace GfxTL
 					m_capacity = NULL;
 					return;
 				}
-				m_begin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+				m_begin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 				m_end = m_begin + s;
 				m_capacity = m_end;
 				memcpy(m_begin, v.m_begin, s * sizeof(T));
@@ -55,7 +55,7 @@ namespace GfxTL
 			~FlatCopyVector()
 			{
 				if(m_begin)
-					_mm_free(m_begin); //delete[] m_begin;
+					CUSTOM_FREE(m_begin); //delete[] m_begin;
 			}
 
 			FlatCopyVector< T > &operator=(const FlatCopyVector< T > &v)
@@ -69,8 +69,8 @@ namespace GfxTL
 					return *this;
 				}
 				if(m_begin)
-					_mm_free(m_begin); //delete[] m_begin;
-				m_begin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+					CUSTOM_FREE(m_begin); //delete[] m_begin;
+				m_begin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 				m_end = m_begin + s;
 				m_capacity = m_end;
 				memcpy(m_begin, v.m_begin, s * sizeof(T));
@@ -88,11 +88,11 @@ namespace GfxTL
 				if((size_t)(m_capacity - m_begin) < s)
 				{
 					size_t olds = size();
-					T *newBegin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+					T *newBegin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 					if(m_begin)
 					{
 						memcpy(newBegin, m_begin, olds * sizeof(T));
-						_mm_free(m_begin); //delete[] m_begin;
+						CUSTOM_FREE(m_begin); //delete[] m_begin;
 					}
 					m_end = newBegin + olds;
 					m_begin = newBegin;
@@ -122,11 +122,11 @@ namespace GfxTL
 					m_end = m_begin + s;
 					return;
 				}
-				T *newBegin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+				T *newBegin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 				if(m_begin)
 				{
 					memcpy(newBegin, m_begin, size() * sizeof(T));
-					_mm_free(m_begin); //delete[] m_begin;
+					CUSTOM_FREE(m_begin); //delete[] m_begin;
 				}
 				m_end = newBegin + s;
 				m_begin = newBegin;
@@ -171,11 +171,11 @@ namespace GfxTL
 					size_t olds = size();
 					size_t s = olds * 2;
 					if(!s) s = 1;
-					T *newBegin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+					T *newBegin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 					if(m_begin)
 					{
 						memcpy(newBegin, m_begin, olds * sizeof(T));
-						_mm_free(m_begin); //delete[] m_begin;
+						CUSTOM_FREE(m_begin); //delete[] m_begin;
 					}
 					m_end = newBegin + olds;
 					m_begin = newBegin;
@@ -193,11 +193,11 @@ namespace GfxTL
 					size_t olds = size();
 					size_t s = olds * 2;
 					if(!s) s = 1;
-					T *newBegin = (T *)_mm_malloc(s * sizeof(T), 16); //new T[s];
+					T *newBegin = (T *)CUSTOM_ALLOC(s * sizeof(T), 16); //new T[s];
 					if(m_begin)
 					{
 						memcpy(newBegin, m_begin, olds * sizeof(T));
-						_mm_free(m_begin); //delete[] m_begin;
+						CUSTOM_FREE(m_begin); //delete[] m_begin;
 					}
 					m_end = newBegin + olds;
 					m_begin = newBegin;

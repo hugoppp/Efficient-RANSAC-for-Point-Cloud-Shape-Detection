@@ -4,11 +4,11 @@ project(pc_ransac)
 
 set(CMAKE_CXX_FLAGS "-fpermissive")
 
-include_directories(./)
-include_directories(./MiscLib/)
+include_directories(SYSTEM ./)
+include_directories(SYSTEM ./MiscLib/)
 FILE(GLOB SRC "./*.cpp")
 FILE(GLOB MISC_SRC "./MiscLib/*.cpp")
 
+add_compile_options(-w)
+
 add_library(libransac STATIC  ${SRC} ${MISC_SRC})
-add_executable(main main.cpp)
-target_link_libraries(main libransac)

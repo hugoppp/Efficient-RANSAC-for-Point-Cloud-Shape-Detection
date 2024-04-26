@@ -83,12 +83,12 @@ namespace GfxTL
 
 			/*void *operator new(size_t size)
 			{
-				return _mm_malloc(size, 16);
+				return CUSTOM_ALLOC(size, 16);
 			}
 
 			void operator delete(void *ptr)
 			{
-				_mm_free(ptr);
+				CUSTOM_FREE(ptr);
 			}*/
 
 		private:
@@ -260,7 +260,7 @@ namespace GfxTL
 					else
 						BaseType::LeaveGlobalBuildInformation(*p.first, p.second);
 					while(p.second.CreateChild() < CellType::NChildren &&
-						!ExistChild(*p.first, p.second.CreateChild()))
+						!this->ExistChild(*p.first, p.second.CreateChild()))
 						++p.second.CreateChild();
 					if(p.second.CreateChild() == CellType::NChildren)
 					{
